@@ -48,7 +48,7 @@ class EbookApiController extends Controller
                         ->where('jenis_buku', 'ebook')
                         ->orderBy('bukus.id','desc')
                         ->get();
-        return response()->json($kategori_ebook, 200);
+        return response()->json(["kategori"=>$kategori_ebook], 200);
     }
 
     public function tampilEbookBaru(){

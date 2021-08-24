@@ -18,14 +18,25 @@ class PenggunaApiController extends Controller
         $id=$request->pengguna_id;
 
         $profil= User::find($id);
-        $profil->update([
+        if($profil->update([
             'nama' => $request->nama,
             'email' =>$request->email, 
             'password' => $request->password,
             'alamat' => $request->alamat,
             'nomor_telepon' => $request->nomor_telepon,
-        ]);
-        return response()->json($profil, 200);
+        ])){
+            $pesan = [
+                "message" => "success",
+                "success" => true
+            ];
+            return response()->json($pesan);
+        }else{
+            $pesan = [
+                "message" => "gagal",
+                "success" => true
+            ];
+            return response()->json($pesan);
+        };
 
     }
 }

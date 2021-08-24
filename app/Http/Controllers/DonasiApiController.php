@@ -87,14 +87,23 @@ class DonasiApiController extends Controller
         $ebook->file_ebook = $nama_ebook;
         $ebook->judul_buku = $request->judul_buku;
 
-        if ($ebook) {
-            $ebook->update(['file_ebook'=> $nama_ebook]);
-            $ebook->update(['status'=>$status = 2]);
-        }
-
         $ebookf->move($path, $nama_ebook);
-        return response()->json($ebook, 200);
+        if ($ebook) {
+            if($ebook->update(['file_ebook'=> $nama_ebook, 'status'=>$status = 2])){
+                $pesan = [
+                    "message" => "success",
+                    "success" => true
+                ];
+                return response()->json($pesan);
+            }else{
+                $pesan = [
+                    "message" => "gagal",
+                    "success" => true
+                ];
+                return response()->json($pesan);
 
+            };
+        }
         
     }
 
@@ -108,10 +117,22 @@ class DonasiApiController extends Controller
         switch($jenis_donasi){
             case "paket":
                 $bukti = $request->bukti_donasi;
-                $cod->update([
+                if($cod->update([
                     'bukti_donasi' => $bukti,
                     'status' => 2, 
-                ]);
+                ])){
+                    $pesan = [
+                        "message" => "success",
+                        "success" => true
+                    ];
+                    return response()->json($pesan);
+                }else{
+                    $pesan = [
+                        "message" => "gagal",
+                        "success" => true
+                    ];
+                    return response()->json($pesan);
+                };
             break;
             case "cod":
                 $image = $request->file('bukti_donasi');
@@ -119,15 +140,24 @@ class DonasiApiController extends Controller
                 $image_name = 'bukti-'.$nama_file.'.'.$request->file('bukti_donasi')->extension();
                 $path = public_path('img/donasi/');
                 $image->move($path, $image_name);
-                $cod->update([
+                if($cod->update([
                     'bukti_donasi' => $image_name,
                     'status' => 2,
-                ]);
+                ])){
+                    $pesan = [
+                        "message" => "success",
+                        "success" => true
+                    ];
+                    return response()->json($pesan);
+                }else{
+                    $pesan = [
+                        "message" => "gagal",
+                        "success" => true
+                    ];
+                    return response()->json($pesan);
+                };
             break;        
         }
-        
-        return response()->json($cod, 200);
-        
     }
 
     public function infoDonasiebook(){

@@ -49,23 +49,23 @@ class AuthApiController extends Controller
        if ($pengguna) {
            if(password_verify($request->password, $pengguna->password)){
             return response()->json([
-                'success' => 1,
+                'success' => true,
                 'message' => 'Selamat Datang '.$pengguna->nama,
                 'user' => $pengguna
             ]);
-           }
-           
-           return response()->json([
-            'success' => 0,
-            'messages' => 'password salah'
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'messages' => 'gagal'
+                ]);
+            }
+    }else{
+        return response()->json([
+            'success' => false,
+            'messages' =>'email tidak terdaftar'
         ]);
-       }
-
-            return response()->json([
-                'success' => 0,
-                'messages' => 'email tidak terdaftar'
-            ]);
     }
+}
 
     public function reset(Request $request){
         $email = $request->email;
@@ -74,17 +74,26 @@ class AuthApiController extends Controller
         $user = User::where('email', $email)->where('nomor_telepon', $nomor_telepon)->first();
 
         if(isset($user)){
-            $user->update([
+            if($user->update([
                 'password' => Hash::make($request->password),
-            ]);
-
+            ])){
+                return response()->json([
+                    'success' =>true,
+                    'message' => 'reset berhasil'
+                ]);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'reset gagal'
+                ]);
+            }
+        }else{
             return response()->json([
-                'success' => 1,
-                'message' => 'reset  berhasil'
+                'success' => false,
+                'message' => 'akun tidak ditemukan'
             ]);
-
         }
-}
 
+    }
 
 }

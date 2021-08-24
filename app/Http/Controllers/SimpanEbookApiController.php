@@ -17,10 +17,20 @@ class SimpanEbookApiController extends Controller
             $simpan = new SimpanEbook();
             $simpan->user_id = $request['user_id'];
             $simpan->buku_id = $request['buku_id'];
-            $simpan->save();
+            if($simpan->save()){
+                $pesan = [
+                    "message" => "success",
+                    "success" => true
+                ];
+                return response()->json($pesan);
+            }else{
+                $pesan = [
+                    "message" => "gagal",
+                    "success" => true
+                ];
+                return response()->json($pesan);
+            };
         }
-        
-        return response()->json( $simpan, 200);
 
     }
 

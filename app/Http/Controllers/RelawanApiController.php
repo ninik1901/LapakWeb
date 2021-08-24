@@ -14,8 +14,20 @@ class RelawanApiController extends Controller
         $relawan->relawan_id=$request->relawan_id;
         $relawan->lapakbaca_id=$request->lapakbaca_id;
         $relawan->status=0;
-        $relawan->save();
+        if($relawan->save()){
+            $pesan = [
+                "message" => "success",
+                "success" => true
+            ];
+            return response()->json($pesan);
+        }else{
+            $pesan = [
+                "message" => "gagal",
+                "success" => true
+            ];
+            return response()->json($pesan);
+        };
 
-        return response()->json($relawan, 200);
+        
     }
 }
