@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/pengguna/register', 'AuthApiController@register');
 Route::post('/pengguna/login', 'AuthApiController@login');
 Route::post('/pengguna/reset', 'AuthApiController@reset');
+Route::post('/pengguna/logout', 'AuthApiController@logout');
 
 Route::get('/tampil_buku', 'BukuApiController@tampilBuku');
 Route::get('/tampil_ebook', 'EbookApiController@tampilEbook');
@@ -30,7 +31,7 @@ Route::post('/pengajuan_ebook', 'DonasiApiController@pengajuanEbook');
 Route::post('/donasi_ebook', 'DonasiApiController@donasiEbook');
 Route::post('/tambah_baca', 'EbookApiController@tambahBaca');
 Route::post('/daftar_simpan', 'SimpanEbookApiController@daftarSimpan');
-Route::get('/tampil_user', 'PenggunaApiController@tampilUser');
+Route::post('/tampil_user', 'PenggunaApiController@tampilUser');
 Route::post('/ubah_profiluser', 'PenggunaApiController@ubahProfilUser');
 Route::get('/info_donasiebook', 'DonasiApiController@infoDonasiebook');
 Route::get('/info_donasibuku', 'DonasiApiController@infoDonasibuku');

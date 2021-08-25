@@ -11,6 +11,14 @@ use Illuminate\Support\Str;
 class AuthApiController extends Controller
 {
     public function register(Request $request){
+        $email_sudah = User::where('email', $request->email)->first();
+        if($email_sudah){
+            $pesan = [
+                "message" => "email sudah digunakan",
+                "error" => true,
+            ];
+            return response()->json($pesan, 422);
+        }
         $user = [
             'nama' => $request->nama,
             'email' => $request->email,
@@ -28,8 +36,8 @@ class AuthApiController extends Controller
         if ($user != null) {
             $pesan = [
                         "message" => "Daftar Berhasil",
-                        // "error" => false,
-                        "Token" => $token->api_token,
+                        "success" => true,
+                        "Token" => $token->api_token
 
                     ];
                      return response()->json($pesan,200);
@@ -56,7 +64,7 @@ class AuthApiController extends Controller
             }else{
                 return response()->json([
                     'success' => false,
-                    'messages' => 'gagal'
+                    'messages' => 'password tidak sesuai'
                 ]);
             }
     }else{
@@ -95,5 +103,7 @@ class AuthApiController extends Controller
         }
 
     }
+
+
 
 }
